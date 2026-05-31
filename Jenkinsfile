@@ -2,16 +2,17 @@ pipeline {
     agent any
 
     environment {
+        PATH = "/usr/local/bin:/usr/bin:/bin:${env.PATH}"
         IMAGE_NAME = "jenkinsdemo"
         CONTAINER_NAME = "nifty_cohen"
     }
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Check Docker') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/bitu-kumar1269/Jenkins-Demo-practice.git'
+                sh 'which docker'
+                sh 'docker --version'
             }
         }
 
@@ -35,7 +36,7 @@ pipeline {
                 sh '''
                 docker run -d \
                 --name $CONTAINER_NAME \
-                -p 3000:3000 \
+                -p 4000:4000 \
                 $IMAGE_NAME
                 '''
             }
